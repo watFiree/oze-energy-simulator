@@ -1,0 +1,16 @@
+{
+  "name": "ktp_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "web:dev": "cd apps/web && pnpm run dev",
+    "api:dev": "cd apps/api && pnpm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@8.8.0"
+}

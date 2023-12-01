@@ -11,5 +11,5 @@
 ## How to run
 
 1. `pnpm install`
-2. `npm run api:dev`
-3. `npm run web:dev`
+2. `pnpm run api:dev`
+3. `pnpm run web:dev`

@@ -10,5 +10,8 @@ export default defineConfig(({ mode }) => {
     server: {
       port: env.WEB_PORT,
     },
+    define: {
+      API_PORT: env.API_PORT || 6969,
+    },
   };
 });

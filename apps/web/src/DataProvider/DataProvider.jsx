@@ -17,7 +17,7 @@ export const DataProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    connection.current = new WebSocket(`ws://localhost:6969`);
+    connection.current = new WebSocket(`ws://localhost:${API_PORT}`);
     connection.current.onopen = () => {
       setStatus(connectionStatus.CONNECTED);
     };

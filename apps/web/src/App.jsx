@@ -1,5 +1,12 @@
+import { VariablesPanel } from "./components/VariablesPanel";
+
 function App() {
-  return <h1>Hello world</h1>;
+  return (
+    <div>
+      <h1>Hello world</h1>
+      <VariablesPanel />
+    </div>
+  );
 }
 
 export default App;

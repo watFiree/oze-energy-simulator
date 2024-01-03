@@ -14,10 +14,10 @@ export const DataProvider = ({ children }) => {
   const connection = useRef(null);
   const [status, setStatus] = useState(connectionStatus.DISCONNECTED);
   const [error, setError] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [data, setData] = useState({});
 
   useEffect(() => {
-    connection.current = new WebSocket(`ws://localhost:${API_PORT}`);
+    connection.current = new WebSocket(`ws://localhost:6969`);
     connection.current.onopen = () => {
       setStatus(connectionStatus.CONNECTED);
     };
@@ -28,7 +28,11 @@ export const DataProvider = ({ children }) => {
       setError(err);
     };
     connection.current.onmessage = (msg) => {
-      setMessages((prev) => [...prev, msg]);
+      try {
+        setData(JSON.parse(msg?.data || {}));
+      } catch {
+        return;
+      }
     };
 
     return () => {
@@ -47,10 +51,10 @@ export const DataProvider = ({ children }) => {
     () => ({
       status,
       error,
-      messages,
+      data,
       sendMessage,
     }),
-    [status, error, messages, sendMessage]
+    [status, error, data, sendMessage]
   );
 
   return (

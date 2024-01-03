@@ -1,10 +1,14 @@
-import { VariablesPanel } from "./components/VariablesPanel";
+import { VariablesPanel } from "./components/VariablesPanel/VariablesPanel";
+import { SimulationDisplay } from "./components/SimulationDisplay/SimulationDisplay";
 
 function App() {
   return (
     <div>
-      <h1>Hello world</h1>
-      <VariablesPanel />
+      <div style={{ display: "flex" }}>
+        <VariablesPanel />
+
+        <SimulationDisplay />
+      </div>
     </div>
   );
 }

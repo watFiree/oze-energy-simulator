@@ -1,0 +1,113 @@
+export const debounceDelay = 500;
+
+export const formInputsData = [
+  {
+    key: "simulationSpeed",
+    label: "Prędkość symulacji (min/1min)",
+    defaultValue: 1000,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 1 },
+  },
+  {
+    key: "waterTemperature",
+    label: "Początkowa temperatura wody (°C)",
+    defaultValue: 20,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 1 },
+  },
+  {
+    key: "requiredWaterTemperature",
+    label: "Oczekiwana temperatura (°C)",
+    defaultValue: 45,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 1 },
+  },
+  {
+    key: "windSpeed",
+    label: "Prędkość wiatru (m/s)",
+    defaultValue: 7,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0 },
+  },
+  {
+    key: "windDensity",
+    label: "Gęstość wiatru (kg/m3)",
+    defaultValue: 1.22,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0 },
+  },
+  {
+    key: "bladeLength",
+    label: "Długość łopaty (m)",
+    defaultValue: 1.35,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0 },
+  },
+  {
+    key: "generatorEfficiency",
+    label: "Sprawność generatora, przetworników, transformatorów (%)",
+    defaultValue: 0.85,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0, max: 1 },
+  },
+  {
+    key: "mechanicalEfficiency",
+    label: "Sprawność mechaniczna (%)",
+    defaultValue: 0.95,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0, max: 1 },
+  },
+  {
+    key: "CpFactor",
+    label: "Współczynnik Cp",
+    defaultValue: 0.593,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0, max: 1 },
+  },
+  {
+    key: "minWindSpeedToWork",
+    label: "Minimalna prędkość wiatru (m/s)",
+    defaultValue: 4,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0 },
+  },
+  {
+    key: "maxWindSpeedToWork",
+    label: "Maksymalna prędkość wiatru (m/s)",
+    defaultValue: 25,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0 },
+  },
+  {
+    key: "socketVoltage",
+    label: "Napięcie gniazdka (V)",
+    defaultValue: 230,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0 },
+  },
+  {
+    key: "socketCurrent",
+    label: "Prąd gniazdka (A)",
+    defaultValue: 16,
+    variant: "outlined",
+    type: "number",
+    formOptions: { min: 0 },
+  },
+];
+
+export const formKeyWithDefaultValue = formInputsData.reduce(
+  (acc, { key, defaultValue }) => ({ ...acc, [key]: defaultValue }),
+  {}
+);

@@ -24,10 +24,10 @@ export default (parameters) => {
     boilerDiameter,
   });
 
-  const deltaT = waterTemperature - outsideTemperature;
+  const deltaT = waterTemperature - outsideTemperature; // [°C]
   const Q = (kFactor * boilerSurfaceArea * deltaT) / boilerThickness; // [W]
   const energyLoss = Q * (simulationSpeed / 1000); // [J]
-  const energyUsed = energyLoss / (waterAmount * heatCapacity * 1000); // [°C]
+  const temperatureLost = energyLoss / (waterAmount * heatCapacity); // [°C]
 
-  return waterTemperature - energyUsed;
+  return temperatureLost;
 };

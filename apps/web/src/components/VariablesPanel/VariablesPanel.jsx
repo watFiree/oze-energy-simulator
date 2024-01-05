@@ -26,12 +26,12 @@ export const VariablesPanel = () => {
       {formInputsData.map(({ key, label, defaultValue, variant, type }) => (
         <TextField
           key={key}
-          // {...register(key, formOptions)}
           label={label}
           defaultValue={defaultValue}
           variant={variant}
           type={type}
           onChange={(e) => {
+            // brakuje walidacji
             sendParametersUpdate(key, Number(e.target.value));
           }}
         />

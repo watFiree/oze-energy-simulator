@@ -1,1 +1,1 @@
-export const heatCapacity = 4.186; // J/(g*C)
+export const heatCapacity = 4186; // J/(kg*C)

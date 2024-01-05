@@ -1,3 +1,5 @@
+import calculateWaterTempLossInTime from "./calculateWaterTempLossInTime.js";
+import calculateWaterTempGrowth from "./calculateWaterTempGrowth.js";
 import {
   calculatePowerGeneratedByTurbine,
   calculateEnergyGeneratedByTurbine,
@@ -13,22 +15,37 @@ export default (parameters) => {
     CpFactor,
     minWindSpeedToWork,
     maxWindSpeedToWork,
-    // boiler
     boilerPower, // kW
-    boilerCapacity, // L
-    requiredWaterTemperature, // degrees Celsius
-    waterTemperature, // degrees Celsius
+    boilerHeight, // m
+    boilerDiameter, // m
+    boilerThickness, // m
+    waterAmount, // L
+    outsideTemperature, // [°C]
+    requiredWaterTemperature, // [°C]
+    waterTemperature, // [°C]
     socketVoltage, // W
     socketCurrent,
-    //Współczynnik przewodzenia ciepła (k)
+    simulationSpeed, // ms
+    kFactor,
   } = parameters;
+
+  const waterTemperatureLost = calculateWaterTempLossInTime({
+    kFactor,
+    waterAmount,
+    outsideTemperature,
+    waterTemperature,
+    boilerHeight,
+    boilerDiameter,
+    boilerThickness,
+    simulationSpeed,
+  });
 
   if (waterTemperature >= requiredWaterTemperature) {
     return {
       isWaterHeaterTurnedOn: false,
-      energyUsed: 0,
+      energyDelivered: 0,
       energySource: null,
-      waterTemperature,
+      waterTemperature: waterTemperature - waterTemperatureLost,
     };
   }
 
@@ -44,14 +61,25 @@ export default (parameters) => {
   });
   const energyGeneratedByTurbine = calculateEnergyGeneratedByTurbine(
     turbinePower,
-    1
-  );
-  const energyFromSocket = socketVoltage * socketCurrent;
+    simulationSpeed / (1000 * 3600)
+  ); // kWh
+  const powerFromSocket = socketVoltage * socketCurrent; // W
+  const energyFromSocket = powerFromSocket * (simulationSpeed / (1000 * 3600)); // kWh;
+
+  const energyDelivered = energyGeneratedByTurbine || energyFromSocket;
+
+  const waterTemperatureGrow = calculateWaterTempGrowth({
+    boilerPower,
+    waterAmount,
+    energyDelivered,
+    simulationSpeed,
+  });
 
   return {
     isWaterHeaterTurnedOn: true,
-    energyUsed: energyGeneratedByTurbine || energyFromSocket,
+    energyDelivered,
     energySource: energyGeneratedByTurbine ? "turbine" : "socket",
-    waterTemperature: waterTemperature + 1,
+    waterTemperature:
+      waterTemperature + waterTemperatureGrow - waterTemperatureLost,
   };
 };

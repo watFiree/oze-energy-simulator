@@ -3,8 +3,8 @@ export const debounceDelay = 500;
 export const formInputsData = [
   {
     key: "simulationSpeed",
-    label: "Prędkość symulacji (min/1min)",
-    defaultValue: 1000,
+    label: "Prędkość symulacji w ms na 1s",
+    defaultValue: 60000,
     variant: "outlined",
     type: "number",
     formOptions: { min: 1 },

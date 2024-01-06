@@ -43,6 +43,7 @@ export default (parameters) => {
   if (waterTemperature >= requiredWaterTemperature) {
     return {
       isWaterHeaterTurnedOn: false,
+      powerAmount: 0,
       energyDelivered: 0,
       energySource: null,
       waterTemperature: waterTemperature - waterTemperatureLost,
@@ -77,6 +78,7 @@ export default (parameters) => {
 
   return {
     isWaterHeaterTurnedOn: true,
+    powerAmount: turbinePower || powerFromSocket,
     energyDelivered,
     energySource: energyGeneratedByTurbine ? "turbine" : "socket",
     waterTemperature:

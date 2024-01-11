@@ -10,19 +10,34 @@ const wss = new WebSocketServer({ port });
 wss.on("connection", function connection(ws) {
   let parameters = {};
   let results = {};
+  let isRunning = false;
 
   ws.on("message", function incoming(message) {
-    const { waterTemperature, ...clientParameters } = JSON.parse(message) ?? {};
+    const { type, data } = JSON.parse(message) ?? {};
 
-    parameters = { ...parameters, ...clientParameters };
-    if (waterTemperature) {
-      results.waterTemperature = waterTemperature;
+    switch (type) {
+      case "START":
+        isRunning = true;
+        break;
+      case "PAUSE":
+        isRunning = false;
+        break;
+      case "DATA": {
+        const { waterTemperature, ...clientParameters } = data;
+        parameters = { ...parameters, ...clientParameters };
+        if (waterTemperature) {
+          results.waterTemperature = waterTemperature;
+        }
+        break;
+      }
     }
-
-    ws.send("New parameters received");
   });
 
   const simulation = setInterval(() => {
+    if (!isRunning) {
+      return;
+    }
+
     results = calculateSimulationResults({
       ...parameters,
       waterTemperature: results.waterTemperature,

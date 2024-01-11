@@ -13,6 +13,7 @@ export const DataContext = createContext();
 export const DataProvider = ({ children }) => {
   const connection = useRef(null);
   const [status, setStatus] = useState(connectionStatus.DISCONNECTED);
+  const [isRunning, setIsRunning] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState({});
 
@@ -23,6 +24,7 @@ export const DataProvider = ({ children }) => {
     };
     connection.current.onclose = () => {
       setStatus(connectionStatus.DISCONNECTED);
+      setIsRunning(false);
     };
     connection.current.onerror = (err) => {
       setError(err);
@@ -37,6 +39,8 @@ export const DataProvider = ({ children }) => {
 
     return () => {
       connection.current.close();
+      setStatus(connectionStatus.DISCONNECTED);
+      setIsRunning(false);
     };
   }, []);
 
@@ -47,14 +51,34 @@ export const DataProvider = ({ children }) => {
     [connection]
   );
 
+  const sendData = useCallback(
+    (data) => {
+      sendMessage(JSON.stringify({ type: "DATA", data }));
+    },
+    [sendMessage]
+  );
+
+  const startSimulation = useCallback(() => {
+    sendMessage(JSON.stringify({ type: "START", data: {} }));
+    setIsRunning(true);
+  }, [sendMessage]);
+
+  const pauseSimulation = useCallback(() => {
+    sendMessage(JSON.stringify({ type: "PAUSE", data: {} }));
+    setIsRunning(false);
+  }, [sendMessage]);
+
   const contextValue = useMemo(
     () => ({
+      isRunning,
       status,
       error,
       data,
-      sendMessage,
+      sendData,
+      startSimulation,
+      pauseSimulation,
     }),
-    [status, error, data, sendMessage]
+    [isRunning, status, error, data, startSimulation, pauseSimulation, sendData]
   );
 
   return (

@@ -32,7 +32,6 @@ export const VariablesPanel = () => {
           variant={variant}
           type={type}
           onChange={(e) => {
-            // brakuje walidacji
             sendParametersUpdate(key, Number(e.target.value));
           }}
         />

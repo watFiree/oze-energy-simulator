@@ -4,6 +4,7 @@ import {
   calculatePowerGeneratedByTurbine,
   calculateEnergyGeneratedByTurbine,
 } from "./windTurbineFunctions.js";
+import { noSocketPowerOptimizationFactor } from "./constants.js";
 
 export default (parameters) => {
   const {
@@ -60,10 +61,26 @@ export default (parameters) => {
     minWindSpeedToWork,
     maxWindSpeedToWork,
   });
+
   const energyGeneratedByTurbine = calculateEnergyGeneratedByTurbine(
     turbinePower,
     simulationSpeed / (1000 * 3600)
   ); // kWh
+
+  if (
+    waterTemperature >=
+      requiredWaterTemperature * noSocketPowerOptimizationFactor &&
+    energyGeneratedByTurbine === 0
+  ) {
+    return {
+      isWaterHeaterTurnedOn: false,
+      powerAmount: 0,
+      energyDelivered: 0,
+      energySource: null,
+      waterTemperature: waterTemperature - waterTemperatureLost,
+    };
+  }
+
   const powerFromSocket = socketVoltage * socketCurrent; // W
   const energyFromSocket = powerFromSocket * (simulationSpeed / (1000 * 3600)); // kWh;
 
